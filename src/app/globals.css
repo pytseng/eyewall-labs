@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+  --crt-bg: #031108;
+  --crt-deep: #010604;
+  --phosphor: #7dff6a;
+  --phosphor-mid: #3cbf58;
+  --phosphor-dim: #1a5a2a;
+  --amber: #f0c14b;
+  --fog: #8fb89a;
+}
+
+@theme inline {
+  --color-crt-bg: var(--crt-bg);
+  --color-crt-deep: var(--crt-deep);
+  --color-phosphor: var(--phosphor);
+  --color-phosphor-mid: var(--phosphor-mid);
+  --color-phosphor-dim: var(--phosphor-dim);
+  --color-amber: var(--amber);
+  --color-fog: var(--fog);
+  --font-sans: var(--font-hud);
+  --font-mono: var(--font-hud);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--crt-bg);
+  color: var(--phosphor);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-hud), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--phosphor) 35%, transparent);
+  color: #e8ffe4;
+}
+
+.crt-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 90% at 50% 42%, #072011 0%, #031108 58%, #010604 100%);
+}
+
+.crt-shell::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.18) 0px,
+      rgb(0 0 0 / 0.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+.crt-shell::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 31;
+  background:
+    radial-gradient(ellipse at center, transparent 42%, rgb(0 0 0 / 0.55) 100%);
+  box-shadow: inset 0 0 120px rgb(0 0 0 / 0.45);
+}
+
+.crt-flicker {
+  animation: crt-flicker 6.4s steps(2, end) infinite;
+}
+
+@keyframes crt-flicker {
+  0%,
+  92%,
+  100% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.94;
+  }
+  94% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.97;
+  }
+}
+
+.phosphor-glow {
+  text-shadow:
+    0 0 8px color-mix(in srgb, var(--phosphor) 55%, transparent),
+    0 0 18px color-mix(in srgb, var(--phosphor) 25%, transparent);
+}
+
+.wordmark {
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+.status-cursor::after {
+  content: "█";
+  margin-left: 0.2em;
+  animation: blink 1.05s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ticker {
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-flicker,
+  .ticker-track,
+  .status-cursor::after {
+    animation: none;
+  }
+}

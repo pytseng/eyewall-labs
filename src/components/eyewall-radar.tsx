@@ -22,12 +22,61 @@ function wallIntensity(radiusNorm: number, angle: number, time: number) {
   return Math.max(0, envelope * noise(angle, radiusNorm, time));
 }
 
-export function EyewallRadar() {
+function ScopeGrid() {
+  const rings = [18, 32, 46, 62, 78, 92];
+  return (
+    <svg
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+    >
+      {rings.map((r) => (
+        <circle
+          key={r}
+          cx="50"
+          cy="50"
+          r={r / 2}
+          fill="none"
+          stroke="rgba(125,255,106,0.38)"
+          strokeWidth="0.35"
+        />
+      ))}
+      <line x1="8" y1="50" x2="92" y2="50" stroke="rgba(125,255,106,0.32)" strokeWidth="0.3" />
+      <line x1="50" y1="8" x2="50" y2="92" stroke="rgba(125,255,106,0.32)" strokeWidth="0.3" />
+      {Array.from({ length: 12 }, (_, i) => {
+        const a = (i / 12) * TAU;
+        return (
+          <line
+            key={i}
+            x1={50 + Math.cos(a) * 42}
+            y1={50 + Math.sin(a) * 42}
+            x2={50 + Math.cos(a) * 46}
+            y2={50 + Math.sin(a) * 46}
+            stroke="rgba(125,255,106,0.4)"
+            strokeWidth="0.4"
+          />
+        );
+      })}
+      <circle
+        cx="50"
+        cy="50"
+        r="8.4"
+        fill="rgba(4,12,7,0.35)"
+        stroke="rgba(240,193,75,0.85)"
+        strokeWidth="0.55"
+      />
+    </svg>
+  );
+}
+
+function WeatherReturns() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const parent = canvas.parentElement;
+    if (!parent) return;
 
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
@@ -43,7 +92,7 @@ export function EyewallRadar() {
     if (!persistCtx) return;
 
     const sizeTo = () => {
-      const rect = canvas.getBoundingClientRect();
+      const rect = parent.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const nextW = Math.max(1, Math.floor(rect.width * dpr));
       const nextH = Math.max(1, Math.floor(rect.height * dpr));
@@ -52,182 +101,82 @@ export function EyewallRadar() {
         canvas.height = nextH;
         persist.width = nextW;
         persist.height = nextH;
-        persistCtx.setTransform(1, 0, 0, 1, 0, 0);
-        persistCtx.clearRect(0, 0, persist.width, persist.height);
-      }
-      return { width: nextW, height: nextH };
-    };
-
-    const blips = [
-      { r: 0.34, a: 0.7, size: 3.1 },
-      { r: 0.43, a: 2.15, size: 2.4 },
-      { r: 0.3, a: 3.9, size: 2.8 },
-      { r: 0.48, a: 5.2, size: 2.2 },
-      { r: 0.37, a: 4.55, size: 2.6 },
-    ];
-
-    const paintSweepReturns = (time: number, sweep: number) => {
-      const { width, height } = persist;
-      const cx = width / 2;
-      const cy = height / 2;
-      const radius = Math.min(width, height) * 0.44;
-      const span = 0.38;
-      const steps = 56;
-
-      for (let i = 0; i < steps; i += 1) {
-        const angle = sweep - (i / steps) * span;
-        const fade = 1 - i / steps;
-        for (let u = 0; u < 34; u += 1) {
-          const rn = 0.18 + (u / 33) * 0.46;
-          const intensity = wallIntensity(rn, angle, time);
-          if (intensity < 0.16) continue;
-          const x = cx + Math.cos(angle) * rn * radius;
-          const y = cy + Math.sin(angle) * rn * radius;
-          const alpha = intensity * fade * 0.62;
-          persistCtx.fillStyle = `rgba(125, 255, 106, ${alpha})`;
-          persistCtx.beginPath();
-          persistCtx.arc(x, y, 1.4 + intensity * 2.1, 0, TAU);
-          persistCtx.fill();
-        }
       }
     };
 
-    const drawOverlay = (time: number, sweep: number) => {
+    const paint = (time: number) => {
+      sizeTo();
       const { width, height } = canvas;
       const cx = width / 2;
       const cy = height / 2;
-      const radius = Math.min(width, height) * 0.44;
+      const radius = Math.min(width, height) * 0.46;
+      const sweep = reduceMotion ? -Math.PI / 2 : (time * 0.85) % TAU;
+
+      persistCtx.fillStyle = "rgba(3, 17, 8, 0.08)";
+      persistCtx.fillRect(0, 0, persist.width, persist.height);
+
+      const span = 0.4;
+      const steps = 50;
+      for (let i = 0; i < steps; i += 1) {
+        const angle = sweep - (i / steps) * span;
+        const fade = 1 - i / steps;
+        for (let u = 0; u < 30; u += 1) {
+          const rn = 0.2 + (u / 29) * 0.42;
+          const intensity = wallIntensity(rn, angle, time);
+          if (intensity < 0.18) continue;
+          persistCtx.fillStyle = `rgba(125, 255, 106, ${intensity * fade * 0.7})`;
+          persistCtx.beginPath();
+          persistCtx.arc(
+            cx + Math.cos(angle) * rn * radius,
+            cy + Math.sin(angle) * rn * radius,
+            1.5 + intensity * 2,
+            0,
+            TAU,
+          );
+          persistCtx.fill();
+        }
+      }
 
       ctx.clearRect(0, 0, width, height);
-
-      const field = ctx.createRadialGradient(cx, cy, radius * 0.06, cx, cy, radius);
-      field.addColorStop(0, "rgba(18, 64, 28, 0.45)");
-      field.addColorStop(1, "rgba(2, 10, 6, 0)");
-      ctx.fillStyle = field;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, TAU);
-      ctx.fill();
-
-      ctx.save();
       ctx.globalCompositeOperation = "lighter";
       ctx.drawImage(persist, 0, 0);
-      ctx.restore();
 
-      ctx.save();
-      ctx.strokeStyle = "rgba(125, 255, 106, 0.42)";
-      ctx.lineWidth = Math.max(1.25, width * 0.0018);
-      [0.18, 0.36, 0.54, 0.72, 0.9, 1].forEach((ring) => {
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius * ring, 0, TAU);
-        ctx.stroke();
-      });
-
-      ctx.beginPath();
-      ctx.moveTo(cx - radius, cy);
-      ctx.lineTo(cx + radius, cy);
-      ctx.moveTo(cx, cy - radius);
-      ctx.lineTo(cx, cy + radius);
-      ctx.stroke();
-
-      ctx.strokeStyle = "rgba(125, 255, 106, 0.28)";
-      for (let i = 0; i < 12; i += 1) {
-        const a = (i / 12) * TAU;
-        ctx.beginPath();
-        ctx.moveTo(cx + Math.cos(a) * radius * 0.9, cy + Math.sin(a) * radius * 0.9);
-        ctx.lineTo(cx + Math.cos(a) * radius, cy + Math.sin(a) * radius);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, radius, sweep - 0.55, sweep);
-      ctx.closePath();
-      const wedge = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-      wedge.addColorStop(0, "rgba(190, 255, 170, 0.28)");
-      wedge.addColorStop(1, "rgba(125, 255, 106, 0.02)");
-      ctx.fillStyle = wedge;
-      ctx.fill();
-
-      ctx.strokeStyle = "rgba(232, 255, 220, 0.95)";
-      ctx.shadowColor = "rgba(125, 255, 106, 0.9)";
-      ctx.shadowBlur = 16;
-      ctx.lineWidth = Math.max(2, width * 0.003);
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + Math.cos(sweep) * radius, cy + Math.sin(sweep) * radius);
-      ctx.stroke();
-      ctx.restore();
-
-      const eye = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 0.17);
-      eye.addColorStop(0, "rgba(4, 10, 6, 0.15)");
-      eye.addColorStop(0.72, "rgba(4, 12, 7, 0.45)");
-      eye.addColorStop(1, "rgba(240, 193, 75, 0.35)");
-      ctx.fillStyle = eye;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius * 0.17, 0, TAU);
-      ctx.fill();
-
-      ctx.strokeStyle = "rgba(240, 193, 75, 0.85)";
-      ctx.lineWidth = Math.max(1.5, width * 0.0022);
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius * 0.17, 0, TAU);
-      ctx.stroke();
-
+      const blips = [
+        { r: 0.34, a: 0.7 },
+        { r: 0.43, a: 2.15 },
+        { r: 0.3, a: 3.9 },
+        { r: 0.48, a: 5.2 },
+      ];
       blips.forEach((blip, index) => {
         const pulse = reduceMotion
           ? 0.8
-          : 0.5 + 0.5 * (0.5 + 0.5 * Math.sin(time * 2.1 + index * 1.7));
-        const x = cx + Math.cos(blip.a) * blip.r * radius;
-        const y = cy + Math.sin(blip.a) * blip.r * radius;
-        ctx.fillStyle = `rgba(232, 255, 220, ${0.45 + pulse * 0.5})`;
-        ctx.shadowColor = "rgba(125, 255, 106, 0.8)";
-        ctx.shadowBlur = 8;
+          : 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(time * 2.2 + index));
+        ctx.fillStyle = `rgba(232, 255, 220, ${0.4 + pulse * 0.5})`;
         ctx.beginPath();
-        ctx.arc(x, y, blip.size * (0.85 + pulse * 0.35), 0, TAU);
+        ctx.arc(
+          cx + Math.cos(blip.a) * blip.r * radius,
+          cy + Math.sin(blip.a) * blip.r * radius,
+          2.4 * pulse,
+          0,
+          TAU,
+        );
         ctx.fill();
       });
-      ctx.shadowBlur = 0;
-
-      ctx.strokeStyle = "rgba(125, 255, 106, 0.7)";
-      ctx.lineWidth = Math.max(1.75, width * 0.0024);
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, TAU);
-      ctx.stroke();
-    };
-
-    const renderFrame = (time: number) => {
-      sizeTo();
-      const sweep = reduceMotion ? -Math.PI / 2 : (time * 0.85) % TAU;
-      persistCtx.fillStyle = "rgba(3, 17, 8, 0.07)";
-      persistCtx.fillRect(0, 0, persist.width, persist.height);
-      paintSweepReturns(time, sweep);
-      drawOverlay(time, sweep);
+      ctx.globalCompositeOperation = "source-over";
     };
 
     const loop = (now: number) => {
       if (!running) return;
-      renderFrame(now / 1000);
+      paint(now / 1000);
       frame = requestAnimationFrame(loop);
     };
 
     sizeTo();
-    if (reduceMotion) {
-      renderFrame(0);
-    } else {
-      // Seed a few sweep frames so the wall is visible on first paint.
-      for (let i = 0; i < 18; i += 1) {
-        renderFrame(i * 0.08);
-      }
-      frame = requestAnimationFrame(loop);
-    }
+    for (let i = 0; i < 16; i += 1) paint(i * 0.09);
+    if (!reduceMotion) frame = requestAnimationFrame(loop);
 
-    const observer = new ResizeObserver(() => {
-      renderFrame(reduceMotion ? 0 : performance.now() / 1000);
-    });
-    observer.observe(canvas);
+    const observer = new ResizeObserver(() => paint(performance.now() / 1000));
+    observer.observe(parent);
 
     return () => {
       running = false;
@@ -239,9 +188,27 @@ export function EyewallRadar() {
   return (
     <canvas
       ref={canvasRef}
-      className="relative z-10 h-full w-full"
-      aria-label="Retro radar scope showing a forming eyewall"
-      role="img"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      aria-hidden="true"
     />
+  );
+}
+
+export function EyewallRadar() {
+  return (
+    <div
+      className="relative aspect-square w-full"
+      role="img"
+      aria-label="Retro radar scope showing a forming eyewall"
+    >
+      <div className="radar-face absolute inset-[4%] overflow-hidden rounded-full">
+        <div className="radar-sweep" />
+        <WeatherReturns />
+        <ScopeGrid />
+        <p className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-[10px] tracking-[0.42em] text-amber">
+          EYE
+        </p>
+      </div>
+    </div>
   );
 }

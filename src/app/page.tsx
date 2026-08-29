@@ -34,12 +34,8 @@ export default function Home() {
             <p>OUTER  42 KM</p>
           </aside>
 
-          <section className="relative mx-auto aspect-square w-full max-w-[34rem]">
-            <div className="pointer-events-none absolute inset-[4%] rounded-full shadow-[0_0_80px_rgba(125,255,106,0.12)]" />
+          <section className="relative mx-auto w-full max-w-[34rem]">
             <EyewallRadar />
-            <p className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-[18%] text-center text-[10px] tracking-[0.42em] text-amber">
-              EYE
-            </p>
           </section>
 
           <aside className="hidden text-right text-[11px] leading-5 tracking-[0.16em] text-fog lg:block">

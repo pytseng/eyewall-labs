@@ -35,9 +35,9 @@ export default function Home() {
           </aside>
 
           <section className="relative mx-auto aspect-square w-full max-w-[34rem]">
-            <div className="absolute inset-[6%] rounded-full border border-phosphor/15 shadow-[0_0_60px_rgba(125,255,106,0.08)]" />
+            <div className="pointer-events-none absolute inset-[4%] rounded-full shadow-[0_0_80px_rgba(125,255,106,0.12)]" />
             <EyewallRadar />
-            <p className="pointer-events-none absolute left-1/2 top-[46%] -translate-x-1/2 text-center text-[10px] tracking-[0.38em] text-amber/80">
+            <p className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-[18%] text-center text-[10px] tracking-[0.42em] text-amber">
               EYE
             </p>
           </section>

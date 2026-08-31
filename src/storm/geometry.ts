@@ -114,8 +114,14 @@ export function facingEyeDeg(x: number, y: number): number {
 }
 
 /**
- * Azimuthal angular speed (rad/s). Peak at the eyewall, slower outward.
- * `omegaPeak` is the eyewall value. `falloff` is the 1/r exponent outside the wall.
+ * Azimuthal angular speed (rad/s).
+ *
+ * Max wind sits on the inner eyewall (tiles against the eye). A solid-body
+ * ramp from `eyeRadius` → `eyewallOuter` treated that ring as calm core
+ * and left it near ω = 0.
+ *
+ * Eye: still. Inner wall: `omegaPeak`. Through the wall, 1/r so the
+ * innermost ring leads. Outside `eyewallOuter`: (1/r) ** falloff.
  */
 export function omegaAt(
   r: number,
@@ -125,13 +131,13 @@ export function omegaAt(
   falloff: number,
 ): number {
   if (r <= eyeRadius) return 0;
-  if (r <= eyewallOuter) {
-    const span = eyewallOuter - eyeRadius;
-    if (span <= 1e-6) return omegaPeak;
-    return omegaPeak * ((r - eyeRadius) / span);
-  }
+  const inner = Math.max(eyeRadius, 1e-4);
+  const wall = Math.max(eyewallOuter, inner + 1e-6);
   const p = clamp(falloff, 0.5, 1.5);
-  return omegaPeak * (eyewallOuter / r) ** p;
+  if (r <= wall) {
+    return omegaPeak * (inner / r);
+  }
+  return omegaPeak * (inner / wall) * (wall / r) ** p;
 }
 
 export function tileBillboardTransform(

@@ -32,13 +32,20 @@ export function atlasSlot(id: string, kind: Kind): number {
 export function atlasFaceStyle(
   slot: number,
   side: "front" | "back",
+  stripIndex = 0,
+  stripCount = 1,
 ): CSSProperties {
   const col = slot % ATLAS_COLS;
   const row = Math.floor(slot / ATLAS_COLS);
-  const x = (col / (ATLAS_COLS - 1)) * 100;
-  const y = (row / (ATLAS_ROWS - 1)) * 100;
-  const pos = `${x}% ${y}%`;
-  const size = `${ATLAS_COLS * 100}% ${ATLAS_ROWS * 100}%`;
+  const n = Math.max(1, stripCount);
+  const i = Math.min(n - 1, Math.max(0, stripIndex));
+  const sizeX = ATLAS_COLS * n * 100;
+  const sizeY = ATLAS_ROWS * 100;
+  const posX =
+    ((col * n + i) / Math.max(1, ATLAS_COLS * n - 1)) * 100;
+  const posY = (row / (ATLAS_ROWS - 1)) * 100;
+  const pos = `${posX}% ${posY}%`;
+  const size = `${sizeX}% ${sizeY}%`;
   const image = `url(${ATLAS_URL})`;
   if (side === "back") {
     return {

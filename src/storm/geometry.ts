@@ -130,7 +130,7 @@ export function omegaAt(
   omegaPeak: number,
   falloff: number,
 ): number {
-  if (r <= eyeRadius) return 0;
+  if (r < eyeRadius) return 0;
   const inner = Math.max(eyeRadius, 1e-4);
   const wall = Math.max(eyewallOuter, inner + 1e-6);
   const p = clamp(falloff, 0.5, 1.5);
@@ -146,6 +146,60 @@ export function tileBillboardTransform(
   yawDeg: number,
 ): string {
   return `translate3d(${x}px, ${y}px, 0) translate(-50%, -100%) rotateZ(${yawDeg}deg) rotateX(-90deg)`;
+}
+
+/** Arc a tile subtends on its ring. Inner tiles are capped so a screen
+ * cannot be wider than the wall it sits on (that was the overlapping chord). */
+export function tileCurvePhi(
+  widthPx: number,
+  rhoPx: number,
+  _rNorm: number,
+  maxDeg = 40,
+): number {
+  const rho = Math.max(rhoPx, 1);
+  return Math.min(widthPx / rho, toRad(maxDeg));
+}
+
+/** Cylinder radius for the wrap. Matches the tile's orbital radius. */
+export function tileCurveRho(rhoPx: number, _rNorm: number): number {
+  return Math.max(8, rhoPx);
+}
+
+export function tileStripCount(phi: number): number {
+  if (phi < 0.18) return 1;
+  if (phi < 0.35) return 3;
+  if (phi < 0.55) return 5;
+  return 7;
+}
+
+export type TileStripPose = {
+  rotYDeg: number;
+  width: number;
+  rho: number;
+};
+
+/**
+ * Pose for a CSS cylinder sandwich:
+ * `translateZ(rho) rotateY(rotY) translateZ(-rho)` around the eye.
+ */
+export function tileStripPose(
+  index: number,
+  count: number,
+  rhoPx: number,
+  phi: number,
+  flatWidth: number,
+): TileStripPose {
+  const rho = Math.max(rhoPx, 1);
+  if (count <= 1) {
+    return { rotYDeg: 0, width: flatWidth, rho };
+  }
+  const dPhi = phi / count;
+  const beta = (index - (count - 1) / 2) * dPhi;
+  return {
+    rotYDeg: toDeg(beta),
+    width: Math.max(1, 2 * rho * Math.tan(dPhi / 2)),
+    rho,
+  };
 }
 
 export function polarToXy(

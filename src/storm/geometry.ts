@@ -106,11 +106,12 @@ export function spiralTangentDeg(b: number, theta: number): number {
 }
 
 /**
- * CSS degrees so the tile's top edge (the face) points at the eye.
- * Unrotated top is -y; direction to origin from (x, y) is (-x, -y).
+ * CSS degrees so the tile's long axis (width) aims at the eye.
+ * Unrotated width is +x; a tile at angle θ should rotate by θ
+ * to become a spoke pointing at the origin.
  */
 export function facingEyeDeg(x: number, y: number): number {
-  return toDeg(Math.atan2(y, x)) - 90;
+  return toDeg(Math.atan2(y, x));
 }
 
 export function polarToXy(

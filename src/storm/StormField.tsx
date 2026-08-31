@@ -88,12 +88,13 @@ export function StormField({
 
   return (
     <div
-      className="relative overflow-hidden"
+      className="relative overflow-visible"
       style={{
         width: size,
         height: size,
         background: "#0a0a0a",
         transformOrigin: "50% 50%",
+        transformStyle: "preserve-3d",
       }}
     >
       {painted.map((tile) => (

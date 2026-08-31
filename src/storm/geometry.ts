@@ -106,12 +106,11 @@ export function spiralTangentDeg(b: number, theta: number): number {
 }
 
 /**
- * CSS degrees so the tile's long axis (width) aims at the eye.
- * Unrotated width is +x; a tile at angle θ should rotate by θ
- * to become a spoke pointing at the origin.
+ * Yaw so the tile's width sits tangent to the ring. Combined with a
+ * rotateX stand-up, the face looks at the eye instead of lying on the ground.
  */
 export function facingEyeDeg(x: number, y: number): number {
-  return toDeg(Math.atan2(y, x));
+  return toDeg(Math.atan2(y, x)) + 90;
 }
 
 export function polarToXy(

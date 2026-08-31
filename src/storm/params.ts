@@ -47,7 +47,7 @@ export const defaultParams: StormParams = {
   opacityEyewall: 1,
   opacityFringe: 0.35,
   stormDiameterPx: 920,
-  viewTiltDeg: 0,
+  viewTiltDeg: 45,
   showDebugRings: true,
   showBandCurves: true,
 };

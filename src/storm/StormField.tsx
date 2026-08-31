@@ -93,6 +93,7 @@ export function StormField({
         width: size,
         height: size,
         background: "#0a0a0a",
+        transformOrigin: "50% 50%",
       }}
     >
       {painted.map((tile) => (

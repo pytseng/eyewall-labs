@@ -10,8 +10,14 @@ export default function App() {
     stormDiameterPx: {
       value: defaultParams.stormDiameterPx,
       min: 320,
-      max: 1600,
+      max: 2800,
       step: 10,
+    },
+    viewTiltDeg: {
+      value: defaultParams.viewTiltDeg,
+      min: 0,
+      max: 70,
+      step: 1,
     },
     eyeRadius: {
       value: defaultParams.eyeRadius,
@@ -145,9 +151,27 @@ export default function App() {
     ],
   );
 
+  const tilt = params.viewTiltDeg;
+  const perspectivePx = Math.max(900, params.stormDiameterPx * 1.35);
+
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-neutral-950">
-      <StormField tiles={tiles} params={params} />
+    <div
+      className="fixed inset-0 overflow-hidden bg-neutral-950"
+      style={{
+        perspective: `${perspectivePx}px`,
+        perspectiveOrigin: "50% 50%",
+      }}
+    >
+      <div
+        className="absolute left-1/2 top-1/2"
+        style={{
+          transform: `translate(-50%, -50%) rotateX(${tilt}deg)`,
+          transformOrigin: "50% 50%",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <StormField tiles={tiles} params={params} />
+      </div>
     </div>
   );
 }

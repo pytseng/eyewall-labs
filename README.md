@@ -11,6 +11,10 @@ npm run dev
 
 Open [http://127.0.0.1:47281](http://127.0.0.1:47281).
 
+## Deploy
+
+This is a **Vite** app (`npm run build` → `dist/`), not Next.js. Vercel must use the Vite framework preset. `vercel.json` sets `framework`, `buildCommand`, and `outputDirectory` so a leftover Next.js project setting cannot fail the build.
+
 ## Layout
 
 - `src/storm/geometry.ts` — pure math (PRNG, spiral, tangent, zones)

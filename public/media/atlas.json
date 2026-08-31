@@ -1,0 +1,183 @@
+{
+  "cols": 8,
+  "rows": 8,
+  "cellW": 160,
+  "cellH": 100,
+  "file": "atlas.webp",
+  "fallback": "atlas.jpg",
+  "kinds": {
+    "video": {
+      "start": 0,
+      "count": 16
+    },
+    "dashboard": {
+      "start": 16,
+      "count": 12
+    },
+    "chart": {
+      "start": 28,
+      "count": 10
+    },
+    "code": {
+      "start": 38,
+      "count": 10
+    },
+    "screenshot": {
+      "start": 48,
+      "count": 12
+    },
+    "debris": {
+      "start": 60,
+      "count": 4
+    }
+  },
+  "credits": [
+    {
+      "id": "s36-39-014",
+      "title": "STS-36 night Earth observation of New York City",
+      "source": "NASA/JSC",
+      "url": "https://images-assets.nasa.gov/image/s36-39-014/s36-39-014~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001586",
+      "title": "City Lights Illuminate the Nile",
+      "source": "NASA/GSFC",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001586/GSFC_20171208_Archive_e001586~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001638",
+      "title": "City Lights of South America\u2019s Atlantic Coast",
+      "source": "NASA/GSFC",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001638/GSFC_20171208_Archive_e001638~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "iss040e091208",
+      "title": "Earth Observation from ISS",
+      "source": "NASA/JSC",
+      "url": "https://images-assets.nasa.gov/image/iss040e091208/iss040e091208~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001464",
+      "title": "Hubble reveals the Ring Nebula\u2019s true shape",
+      "source": "NASA/ESA/Hubble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001464/GSFC_20171208_Archive_e001464~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001955",
+      "title": "Hubble reveals heart of Lagoon Nebula",
+      "source": "NASA/ESA/Hubble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001955/GSFC_20171208_Archive_e001955~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "GSFC_20171208_Archive_e000699",
+      "title": "Hubble View of a Nitrogen-Rich Nebula",
+      "source": "NASA/ESA/Hubble",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000699/GSFC_20171208_Archive_e000699~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "PIA03606",
+      "title": "Most Detailed Image of the Crab Nebula",
+      "source": "NASA/JPL/ESA/Hubble",
+      "url": "https://images-assets.nasa.gov/image/PIA03606/PIA03606~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "carina_nebula",
+      "title": "JWST NIRCam Cosmic Cliffs in Carina Nebula",
+      "source": "NASA/ESA/CSA/STScI",
+      "url": "https://images-assets.nasa.gov/image/carina_nebula/carina_nebula~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "PIA24433",
+      "title": "Aurorae on Jupiter and Earth",
+      "source": "NASA/JPL",
+      "url": "https://images-assets.nasa.gov/image/PIA24433/PIA24433~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "GSFC_20171208_Archive_e001386",
+      "title": "Blue Marble 2012",
+      "source": "NASA/GSFC",
+      "url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001386/GSFC_20171208_Archive_e001386~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "PIA18033",
+      "title": "Earth",
+      "source": "NASA/JPL",
+      "url": "https://images-assets.nasa.gov/image/PIA18033/PIA18033~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "iss042e099123",
+      "title": "ISS observation",
+      "source": "NASA/JSC",
+      "url": "https://images-assets.nasa.gov/image/iss042e099123/iss042e099123~small.jpg",
+      "kind": "nasa"
+    },
+    {
+      "id": "starry-night",
+      "title": "Vincent van Gogh, The Starry Night (1889)",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/330px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "great-wave",
+      "title": "Hokusai, The Great Wave off Kanagawa",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/330px-The_Great_Wave_off_Kanagawa.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "impression-sunrise",
+      "title": "Claude Monet, Impression, Sunrise (1872)",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Monet_-_Impression%2C_Sunrise.jpg/330px-Monet_-_Impression%2C_Sunrise.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "water-lilies",
+      "title": "Claude Monet, Water Lilies (1906)",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/330px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "cafe-terrace",
+      "title": "Vincent van Gogh, Caf\u00e9 Terrace at Night (1888)",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Vincent_Willem_van_Gogh_-_Cafe_Terrace_at_Night_%28Yorck%29.jpg/330px-Vincent_Willem_van_Gogh_-_Cafe_Terrace_at_Night_%28Yorck%29.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "wanderer",
+      "title": "Caspar David Friedrich, Wanderer above the Sea of Fog",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg/330px-Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "red-fuji",
+      "title": "Hokusai, Fine Wind, Clear Morning (Red Fuji)",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Red_Fuji_southern_wind_clear_morning.jpg/330px-Red_Fuji_southern_wind_clear_morning.jpg",
+      "kind": "wikimedia"
+    },
+    {
+      "id": "scream",
+      "title": "Edvard Munch, The Scream (1893)",
+      "source": "Public domain / Wikimedia Commons",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/330px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg",
+      "kind": "wikimedia"
+    }
+  ]
+}

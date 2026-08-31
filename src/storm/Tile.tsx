@@ -1,65 +1,33 @@
-import type { Kind, Tile } from "./generate";
+import type { Tile } from "./generate";
 import { tileBillboardTransform } from "./geometry";
-
-const FILL: Record<Kind, string> = {
-  video: "#e8e8e8",
-  dashboard: "#d2d2d2",
-  chart: "#bcbcbc",
-  code: "#a8a8a8",
-  screenshot: "#949494",
-  debris: "#7a7a7a",
-};
-
-const BACK_FILL: Record<Kind, string> = {
-  video: "#6e6e6e",
-  dashboard: "#5c5c5c",
-  chart: "#525252",
-  code: "#484848",
-  screenshot: "#404040",
-  debris: "#363636",
-};
+import { atlasFaceStyle, atlasSlot } from "./media";
 
 function Face({
-  tile,
   side,
+  slot,
 }: {
-  tile: Tile;
   side: "front" | "back";
+  slot: number;
 }) {
-  const fill = side === "front" ? FILL[tile.kind] : BACK_FILL[tile.kind];
   return (
     <div
       style={{
         position: "absolute",
         inset: 0,
-        background: fill,
-        border: "1px solid #2a2a2a",
+        ...atlasFaceStyle(slot, side),
+        backgroundColor: "#141414",
+        border: "1px solid #1a1a1a",
         boxSizing: "border-box",
-        padding: 2,
+        overflow: "hidden",
         backfaceVisibility: "hidden",
         transform: side === "back" ? "rotateY(180deg)" : undefined,
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
       }}
-    >
-      <span
-        style={{
-          fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
-          fontSize: 7,
-          lineHeight: 1.1,
-          color: side === "front" ? "#111" : "#ddd",
-          whiteSpace: "nowrap",
-          userSelect: "none",
-        }}
-      >
-        {tile.kind} {tile.bandIndex === null ? "s" : tile.bandIndex}
-      </span>
-    </div>
+    />
   );
 }
 
 export function TileView({ tile }: { tile: Tile }) {
+  const slot = atlasSlot(tile.id, tile.kind);
   return (
     <div
       data-storm-tile=""
@@ -69,6 +37,7 @@ export function TileView({ tile }: { tile: Tile }) {
       data-rot-jitter={tile.rotJitter}
       data-zone={tile.zone}
       data-kind={tile.kind}
+      data-slot={slot}
       style={{
         position: "absolute",
         left: "50%",
@@ -82,8 +51,9 @@ export function TileView({ tile }: { tile: Tile }) {
         pointerEvents: "none",
       }}
     >
-      <Face tile={tile} side="front" />
-      <Face tile={tile} side="back" />
+      <Face side="front" slot={slot} />
+      <Face side="back" slot={slot} />
     </div>
   );
 }
+

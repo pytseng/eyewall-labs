@@ -52,6 +52,6 @@ export const defaultParams: StormParams = {
   viewTiltDeg: 45,
   spinRpm: 0.35,
   spinFalloff: 1,
-  showDebugRings: true,
-  showBandCurves: true,
+  showDebugRings: false,
+  showBandCurves: false,
 };

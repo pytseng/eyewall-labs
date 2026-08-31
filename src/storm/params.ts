@@ -1,0 +1,51 @@
+export type StormParams = {
+  seed: number;
+  eyeRadius: number;
+  eyewallOuter: number;
+  overcastOuter: number;
+  bandsOuter: number;
+  bandCount: number;
+  pitchAngle: number;
+  bandWraps: number;
+  tileCount: number;
+  scatterRatio: number;
+  jitterInner: number;
+  jitterOuter: number;
+  rotDeviationInner: number;
+  rotDeviationOuter: number;
+  sizeMin: number;
+  sizeMax: number;
+  aspectMin: number;
+  aspectMax: number;
+  opacityEyewall: number;
+  opacityFringe: number;
+  stormDiameterPx: number;
+  showDebugRings: boolean;
+  showBandCurves: boolean;
+};
+
+export const defaultParams: StormParams = {
+  seed: 1,
+  eyeRadius: 0.055,
+  eyewallOuter: 0.085,
+  overcastOuter: 0.35,
+  bandsOuter: 0.75,
+  bandCount: 4,
+  pitchAngle: 15,
+  bandWraps: 1.8,
+  tileCount: 800,
+  scatterRatio: 0.28,
+  jitterInner: 0.004,
+  jitterOuter: 0.055,
+  rotDeviationInner: 8,
+  rotDeviationOuter: 25,
+  sizeMin: 10,
+  sizeMax: 36,
+  aspectMin: 1.15,
+  aspectMax: 2.4,
+  opacityEyewall: 1,
+  opacityFringe: 0.35,
+  stormDiameterPx: 920,
+  showDebugRings: true,
+  showBandCurves: true,
+};

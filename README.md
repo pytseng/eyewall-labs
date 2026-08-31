@@ -1,6 +1,6 @@
 # Eyewall Labs
 
-Official website for **Eyewall Labs**. The live page is a single-line placeholder while the domain is pointed at Vercel.
+Static top-down typhoon of rectangular media tiles. No animation. Tune geometry with the leva panel.
 
 ## Local
 
@@ -9,15 +9,14 @@ npm install
 npm run dev
 ```
 
-## Deploy
+Open [http://127.0.0.1:47281](http://127.0.0.1:47281).
 
-Pushes to `main` on [github.com/pytseng/eyewall-labs](https://github.com/pytseng/eyewall-labs) deploy to [eyewall-labs.vercel.app](https://eyewall-labs.vercel.app).
+## Layout
 
-To use a custom domain, add it in the Vercel project under **Settings → Domains**, then create the DNS records Vercel shows at your current registrar. Typical values:
+- `src/storm/geometry.ts` — pure math (PRNG, spiral, tangent, zones)
+- `src/storm/params.ts` — defaults
+- `src/storm/generate.ts` — seed + params → `Tile[]`
+- `src/storm/StormField.tsx` / `Tile.tsx` — DOM render
+- `src/App.tsx` — leva controls
 
-| Type | Host | Value |
-| --- | --- | --- |
-| A | `@` | `76.76.21.21` |
-| CNAME | `www` | the CNAME target shown in Vercel (often `cname.vercel-dns.com`) |
-
-Keep existing MX records if you use email on that domain. Do not switch nameservers unless you want Vercel to manage all DNS.
+Toggle `showDebugRings` and `showBandCurves` to check whether tiles sit on the spirals.

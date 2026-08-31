@@ -113,6 +113,35 @@ export function facingEyeDeg(x: number, y: number): number {
   return toDeg(Math.atan2(y, x)) + 90;
 }
 
+/**
+ * Azimuthal angular speed (rad/s). Peak at the eyewall, slower outward.
+ * `omegaPeak` is the eyewall value. `falloff` is the 1/r exponent outside the wall.
+ */
+export function omegaAt(
+  r: number,
+  eyeRadius: number,
+  eyewallOuter: number,
+  omegaPeak: number,
+  falloff: number,
+): number {
+  if (r <= eyeRadius) return 0;
+  if (r <= eyewallOuter) {
+    const span = eyewallOuter - eyeRadius;
+    if (span <= 1e-6) return omegaPeak;
+    return omegaPeak * ((r - eyeRadius) / span);
+  }
+  const p = clamp(falloff, 0.5, 1.5);
+  return omegaPeak * (eyewallOuter / r) ** p;
+}
+
+export function tileBillboardTransform(
+  x: number,
+  y: number,
+  yawDeg: number,
+): string {
+  return `translate3d(${x}px, ${y}px, 0) translate(-50%, -100%) rotateZ(${yawDeg}deg) rotateX(-90deg)`;
+}
+
 export function polarToXy(
   r: number,
   theta: number,

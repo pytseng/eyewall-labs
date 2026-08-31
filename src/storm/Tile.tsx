@@ -1,4 +1,5 @@
 import type { Kind, Tile } from "./generate";
+import { tileBillboardTransform } from "./geometry";
 
 const FILL: Record<Kind, string> = {
   video: "#e8e8e8",
@@ -61,17 +62,22 @@ function Face({
 export function TileView({ tile }: { tile: Tile }) {
   return (
     <div
+      data-storm-tile=""
+      data-x={tile.x}
+      data-y={tile.y}
+      data-r={tile.r}
+      data-rot-jitter={tile.rotJitter}
       data-zone={tile.zone}
       data-kind={tile.kind}
       style={{
         position: "absolute",
-        left: `calc(50% + ${tile.x}px)`,
-        top: `calc(50% + ${tile.y}px)`,
+        left: "50%",
+        top: "50%",
         width: tile.w,
         height: tile.h,
         opacity: tile.opacity,
         transformOrigin: "50% 100%",
-        transform: `translate(-50%, -100%) rotateZ(${tile.rot}deg) rotateX(-90deg)`,
+        transform: tileBillboardTransform(tile.x, tile.y, tile.rot),
         transformStyle: "preserve-3d",
         pointerEvents: "none",
       }}

@@ -38,6 +38,7 @@ export type Tile = {
   w: number;
   h: number;
   rot: number;
+  rotJitter: number;
   opacity: number;
   zone: Zone;
   kind: Kind;
@@ -112,7 +113,8 @@ function makeTile(
     params.rotDeviationOuter,
     invLerp(params.eyeRadius, 1, r),
   );
-  const rot = facingEyeDeg(x, y) + (rng() * 2 - 1) * rotDev;
+  const rotJitter = (rng() * 2 - 1) * rotDev;
+  const rot = facingEyeDeg(x, y) + rotJitter;
 
   const size = lerp(params.sizeMin, params.sizeMax, sizeFactor(r, z));
   const aspect = randRange(rng, params.aspectMin, params.aspectMax);
@@ -128,6 +130,7 @@ function makeTile(
     w,
     h,
     rot,
+    rotJitter,
     opacity: opacityAt(r, z, params.opacityEyewall, params.opacityFringe),
     zone: paintZone,
     kind: pickKind(paintZone, rng),

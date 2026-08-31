@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import {
   bandTheta0,
   spiralB,
@@ -76,18 +77,19 @@ function DebugBands({ params }: { params: StormParams }) {
   );
 }
 
-export function StormField({
-  tiles,
-  params,
-}: {
-  tiles: Tile[];
-  params: StormParams;
-}) {
+export const StormField = forwardRef<
+  HTMLDivElement,
+  {
+    tiles: Tile[];
+    params: StormParams;
+  }
+>(function StormField({ tiles, params }, ref) {
   const painted = [...tiles].sort((a, b) => b.r - a.r);
   const size = params.stormDiameterPx;
 
   return (
     <div
+      ref={ref}
       className="relative overflow-visible"
       style={{
         width: size,
@@ -104,4 +106,4 @@ export function StormField({
       {params.showDebugRings ? <DebugRings params={params} /> : null}
     </div>
   );
-}
+});

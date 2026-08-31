@@ -13,7 +13,7 @@ import {
   sizeFactor,
   spiralB,
   spiralFrame,
-  spiralTangentDeg,
+  facingEyeDeg,
   spiralTheta,
   zoneAt,
   type ZoneBreaks,
@@ -112,8 +112,7 @@ function makeTile(
     params.rotDeviationOuter,
     invLerp(params.eyeRadius, 1, r),
   );
-  const rot =
-    spiralTangentDeg(b, theta) + (rng() * 2 - 1) * rotDev;
+  const rot = facingEyeDeg(x, y) + (rng() * 2 - 1) * rotDev;
 
   const size = lerp(params.sizeMin, params.sizeMax, sizeFactor(r, z));
   const aspect = randRange(rng, params.aspectMin, params.aspectMax);

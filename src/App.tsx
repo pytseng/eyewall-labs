@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useControls } from "leva";
 import { generateTiles } from "./storm/generate";
 import { defaultParams, type StormParams } from "./storm/params";
@@ -18,6 +18,12 @@ export default function App() {
       min: 0,
       max: 70,
       step: 1,
+    },
+    spinRpm: {
+      value: defaultParams.spinRpm,
+      min: 0,
+      max: 4,
+      step: 0.05,
     },
     eyeRadius: {
       value: defaultParams.eyeRadius,
@@ -153,6 +159,42 @@ export default function App() {
 
   const tilt = params.viewTiltDeg;
   const perspectivePx = Math.max(900, params.stormDiameterPx * 1.35);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const tiltRef = useRef(tilt);
+  const spinRpmRef = useRef(params.spinRpm);
+  tiltRef.current = tilt;
+  spinRpmRef.current = params.spinRpm;
+
+  useEffect(() => {
+    const apply = (deg: number) => {
+      const node = stageRef.current;
+      if (node) {
+        node.style.transform = `translate(-50%, -50%) rotateX(${tiltRef.current}deg) rotateZ(${deg}deg)`;
+      }
+    };
+
+    apply(0);
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduceMotion) return;
+
+    let angle = 0;
+    let last = performance.now();
+    let frame = 0;
+
+    const tick = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      angle += spinRpmRef.current * -6 * dt;
+      apply(angle);
+      frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   return (
     <div
@@ -163,9 +205,9 @@ export default function App() {
       }}
     >
       <div
+        ref={stageRef}
         className="absolute left-1/2 top-1/2"
         style={{
-          transform: `translate(-50%, -50%) rotateX(${tilt}deg)`,
           transformOrigin: "50% 50%",
           transformStyle: "preserve-3d",
         }}

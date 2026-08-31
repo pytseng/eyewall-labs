@@ -21,6 +21,7 @@ export type StormParams = {
   opacityFringe: number;
   stormDiameterPx: number;
   viewTiltDeg: number;
+  spinRpm: number;
   showDebugRings: boolean;
   showBandCurves: boolean;
 };
@@ -48,6 +49,7 @@ export const defaultParams: StormParams = {
   opacityFringe: 0.35,
   stormDiameterPx: 920,
   viewTiltDeg: 45,
+  spinRpm: 0.25,
   showDebugRings: true,
   showBandCurves: true,
 };

@@ -9,6 +9,55 @@ const FILL: Record<Kind, string> = {
   debris: "#7a7a7a",
 };
 
+const BACK_FILL: Record<Kind, string> = {
+  video: "#6e6e6e",
+  dashboard: "#5c5c5c",
+  chart: "#525252",
+  code: "#484848",
+  screenshot: "#404040",
+  debris: "#363636",
+};
+
+function Face({
+  tile,
+  side,
+}: {
+  tile: Tile;
+  side: "front" | "back";
+}) {
+  const fill = side === "front" ? FILL[tile.kind] : BACK_FILL[tile.kind];
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: fill,
+        border: "1px solid #2a2a2a",
+        boxSizing: "border-box",
+        padding: 2,
+        backfaceVisibility: "hidden",
+        transform: side === "back" ? "rotateY(180deg)" : undefined,
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+          fontSize: 7,
+          lineHeight: 1.1,
+          color: side === "front" ? "#111" : "#ddd",
+          whiteSpace: "nowrap",
+          userSelect: "none",
+        }}
+      >
+        {tile.kind} {tile.bandIndex === null ? "s" : tile.bandIndex}
+      </span>
+    </div>
+  );
+}
+
 export function TileView({ tile }: { tile: Tile }) {
   return (
     <div
@@ -24,30 +73,11 @@ export function TileView({ tile }: { tile: Tile }) {
         transformOrigin: "50% 100%",
         transform: `translate(-50%, -100%) rotateZ(${tile.rot}deg) rotateX(-90deg)`,
         transformStyle: "preserve-3d",
-        backfaceVisibility: "hidden",
-        background: FILL[tile.kind],
-        border: "1px solid #2a2a2a",
-        boxSizing: "border-box",
-        overflow: "hidden",
         pointerEvents: "none",
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        padding: 2,
       }}
     >
-      <span
-        style={{
-          fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
-          fontSize: 7,
-          lineHeight: 1.1,
-          color: "#111",
-          whiteSpace: "nowrap",
-          userSelect: "none",
-        }}
-      >
-        {tile.kind} {tile.bandIndex === null ? "s" : tile.bandIndex}
-      </span>
+      <Face tile={tile} side="front" />
+      <Face tile={tile} side="back" />
     </div>
   );
 }

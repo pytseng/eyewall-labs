@@ -8,3 +8,32 @@ body,
   overflow: hidden;
   background: #0a0a0a;
 }
+
+.video-landing__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 32%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+}
+
+.video-landing__wordmark {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-family: Almarai, "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: #f3efe6;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.4);
+}

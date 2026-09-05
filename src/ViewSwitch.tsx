@@ -52,11 +52,7 @@ function SwitchButton({
       aria-pressed={active}
       title={label}
       onClick={onClick}
-      className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
-        active
-          ? "bg-white/14 text-white/85"
-          : "text-white/35 hover:text-white/70"
-      }`}
+      className={`view-switch__btn${active ? " is-active" : ""}`}
     >
       {children}
     </button>
@@ -71,7 +67,7 @@ export function ViewSwitch({
   onChange: (view: LandingView) => void;
 }) {
   return (
-    <div className="fixed top-3.5 right-3.5 z-[1100] flex items-center rounded-full border border-white/10 bg-black/25 p-0.5 backdrop-blur-md">
+    <div className="view-switch">
       <SwitchButton
         active={view === "default"}
         label="Video landing"

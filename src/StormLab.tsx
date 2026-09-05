@@ -1,3 +1,4 @@
+// Parked. App no longer imports this file, so leva and the generated storm stay cold.
 import { useEffect, useMemo, useRef } from "react";
 import { useControls } from "leva";
 import { generateTiles } from "./storm/generate";

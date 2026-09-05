@@ -3,18 +3,14 @@ import { ContactChip } from "./ContactChip";
 
 const LOGO_SRC = "/media/eyewall-logo.png";
 
-function CloseIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M3.2 3.2 12.8 12.8M12.8 3.2 3.2 12.8"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+const CLIENTS = [
+  "Airbus",
+  "Mercedes-Benz",
+  "Cartier",
+  "HOKA",
+  "Volkswagen",
+  "Nike",
+];
 
 export function SiteChrome({ showBrand = false }: { showBrand?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -42,7 +38,7 @@ export function SiteChrome({ showBrand = false }: { showBrand?: boolean }) {
             width={40}
             height={40}
           />
-          <h1 className="site-brand__wordmark">Eyewall Labs</h1>
+          <h1 className="visually-hidden">Eyewall Labs</h1>
         </div>
       ) : null}
 
@@ -73,36 +69,30 @@ export function SiteChrome({ showBrand = false }: { showBrand?: boolean }) {
             aria-labelledby={titleId}
             tabIndex={-1}
           >
-            <div className="site-panel__top">
-              <p className="site-panel__kicker">Est. 2026</p>
-              <button
-                type="button"
-                className="site-panel__close"
-                aria-label="Close"
-                onClick={() => setOpen(false)}
-              >
-                <CloseIcon />
-              </button>
-            </div>
-            <h2 className="site-panel__title" id={titleId}>
+            <button
+              type="button"
+              className="site-panel__close"
+              onClick={() => setOpen(false)}
+            >
+              Close
+            </button>
+            <p className="site-panel__name" id={titleId}>
               Eyewall Labs
-            </h2>
-            <div className="site-panel__copy">
-              <p>
-                We implement experimental design prototypes and help companies
-                find value in AI transition.
-              </p>
-              <p>
-                Before Eyewall Labs was founded, we designed industrial-level
-                multi-platform tools, professional 3D authoring tools, mobile
-                AR, VR, and web dashboards used by Airbus, Mercedes-Benz,
-                Cartier, HOKA, Volkswagen, Nike, and others.
-              </p>
-            </div>
-            <div className="site-panel__contact">
-              <p className="site-panel__kicker">Contact</p>
-              <ContactChip hideKicker />
-            </div>
+              <span>2026</span>
+            </p>
+            <p className="site-panel__copy">
+              A studio for experimental design prototypes, and for finding
+              value in an AI transition.
+            </p>
+            <p className="site-panel__note">
+              Before Eyewall, products we designed were used by
+            </p>
+            <ul className="site-panel__clients">
+              {CLIENTS.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+            <ContactChip />
           </aside>
         </div>
       ) : null}
